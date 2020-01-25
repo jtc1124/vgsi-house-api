@@ -29,6 +29,7 @@ public class HousesController {
     this.houseDB = houseDB;
   }
 
+  // Get all houses
   @GetMapping("/houses")
   public List<EntityModel<House>> getHouses() {
     List<EntityModel<House>> houses = houseDB.findAll().stream()
@@ -39,6 +40,7 @@ public class HousesController {
     return houses;
   }
 
+  // Get a single house by ID
   @GetMapping("/houses/{id}")
   public EntityModel<House> getHouse(@PathVariable long id) {
     House house = houseDB.findById(id).orElseThrow(() -> new HouseNotFoundException(id));
@@ -47,6 +49,7 @@ public class HousesController {
       linkTo(methodOn(HousesController.class).getHouses()).withRel("houses"));
   }
 
+  // Update a single house by ID
   @PutMapping("/houses/{id}")
   public EntityModel<House> updateHouse(@PathVariable long id, @RequestBody House updatedHouse) {
     House h = houseDB.findById(id).map(house -> {

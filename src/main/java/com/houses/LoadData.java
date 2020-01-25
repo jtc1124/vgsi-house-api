@@ -41,8 +41,6 @@ class LoadData {
         repository.save(new House(id, firstName, lastName, street, city, state, zip, type));
       }
       csvReader.close();
-
-      // repository.save(new House(new Long(1), "Jack", "Smith", "South St", "Hudson", "MA", new Integer("01749"), "Single Family"));
     };
   }
 }

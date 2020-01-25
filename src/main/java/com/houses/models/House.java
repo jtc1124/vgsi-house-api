@@ -3,6 +3,7 @@ package com.houses.models;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+// Representation of a House, imported from the houses.csv
 @Entity
 public class House {
 
