@@ -4,21 +4,21 @@ import com.houses.db.HouseDB;
 import com.houses.exceptions.HouseNotFoundException;
 import com.houses.exceptions.HouseNotUpdatedException;
 import com.houses.models.House;
+import com.houses.models.HouseList;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.hibernate.tuple.entity.EntityMetamodel;
-import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.server.mvc.ControllerLinkBuilder;
+
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.w3c.dom.Entity;
 
 @RestController
 public class HousesController {
@@ -31,13 +31,22 @@ public class HousesController {
 
   // Get all houses
   @GetMapping("/houses")
-  public List<EntityModel<House>> getHouses() {
-    List<EntityModel<House>> houses = houseDB.findAll().stream()
-      .map(house -> new EntityModel<>(house,
-      linkTo(methodOn(HousesController.class).getHouse(house.getId())).withSelfRel()))
+  public EntityModel<HouseList> getHouses() {
+    List<House> houses = houseDB.findAll();
+    HouseList houseList = new HouseList(houses, houses.size());
+    // EntityModel<HouseList> emHouseList = houseList.getHouseList().stream()
+    //   .map(house -> new EntityModel<>(house,
+    //   linkTo(methodOn(HousesController.class).getHouse(house.getId())).withSelfRel()))
+    //   .collect(Collectors.toList());
+
+    List<Link> links = houseList.getHouseList().stream()
+      .map(house -> linkTo(methodOn(HousesController.class).getHouse(house.getId())).withSelfRel())
       .collect(Collectors.toList());
 
-    return houses;
+    EntityModel<HouseList> emHouseList = new EntityModel<>(houseList);
+    emHouseList.add(links);
+
+    return emHouseList;
   }
 
   // Get a single house by ID

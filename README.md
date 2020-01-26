@@ -21,40 +21,41 @@ This will start a web server on localhost:8080
 GET /api/houses
 Return a list of all houses. Example response:
 ```json
-[
-    {
-        "id": 1,
-        "ownerFirstName": "John",
-        "ownerLastName": "Smith",
-        "streetAddress": "Broad St",
-        "city": "Hudson",
-        "state": "MA",
-        "zip": 1749,
-        "propertyType": "Single Family",
-        "links": [
+{
+    "houseList": [
+        {
+            "id": 1,
+            "ownerFirstName": "Jack",
+            "ownerLastName": "Smith",
+            "streetAddress": "South St",
+            "city": "Hudson",
+            "state": "MA",
+            "zip": 1749,
+            "propertyType": "Single Family"
+        },
+        {
+            "id": 2,
+            "ownerFirstName": "Fred",
+            "ownerLastName": "Mack",
+            "streetAddress": "Central St",
+            "city": "Hudson",
+            "state": "MA",
+            "zip": 1749,
+            "propertyType": "Multi Family"
+        }
+    ],
+    "count": 2,
+    "_links": {
+        "self": [
             {
-                "rel": "self",
                 "href": "http://localhost:8080/api/houses/1"
-            }
-        ]
-    },
-    {
-        "id": 2,
-        "ownerFirstName": "Fred",
-        "ownerLastName": "Mack",
-        "streetAddress": "Central St",
-        "city": "Hudson",
-        "state": "MA",
-        "zip": 1749,
-        "propertyType": "Multi Family",
-        "links": [
+            },
             {
-                "rel": "self",
                 "href": "http://localhost:8080/api/houses/2"
             }
         ]
     }
-]
+}
 ```
 
 GET /api/houses/{id}
@@ -123,6 +124,22 @@ From the root project directory, run
 - Use a more robust database to save the data to disk and persist when the web server stops
 - Add some sort of security to access the endpoints.
 - Write some performance tests for each API endpoint. Could use JMeter for example.
+- Improve the links in the GET /houses response
+
+## API Design Choices
+
+I tried to leverage Spring and its sub-projects as much as possible. While that helped reduce
+boilerplate code and helped me get everything up and running rather quickly, there is
+some weirdness that has caused, specifically with adding the links to the API response body
+for the GET /houses endpoint to get all houses. I used Spring HATEOAS for link generation
+which may have been to my detriment, since the formatting of links is not exactly what was specified
+in the project requirements. I probably would research another link generation library or just written
+that part myself if I could redo this.
+
+For data persistence, I used an H2 in-memory database since that seemed like the lowest barrier
+to entry for data persistence as opposed to setting up a mySQL DB (or some other on disk DB)
+which would require installing extra components or running extra scripts to get this project up and running.
+
 
 ## Notes on security
 
