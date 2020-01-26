@@ -12,9 +12,15 @@ which makes that data available in memory.
 
 ## Starting the service
 
-From the root project directory, run
+You must have Java 8 installed and JAVA_HOME environment variable set to run the service.
+
+From the root project directory on a linux system, run
 ```./gradlew bootRun```
-This will start a web server on localhost:8080
+Or on Windows
+```.\gradlew.bat bootRun```
+This will download gradle 6 (if needed) and start a web server on `localhost:8080`.
+Note if the `gradlew` script needs to install gradle, it will take a few minutes on the first run.
+Subsequent runs will start up the server much faster.
 
 ## Endpoints
 
@@ -115,6 +121,8 @@ Example response:
 
 From the root project directory, run
 ```./gradlew clean test```
+On Windows
+```.\gradlew.bat clean test```
 
 ## Future Enhancements
 
